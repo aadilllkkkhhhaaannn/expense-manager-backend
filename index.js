@@ -9,13 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
-// Or customize CORS
-// app.use(cors({
-//   origin: "http://localhost:5173",
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-//   credentials: true
-// }));
+
 
 app.use(
   cors({
@@ -35,6 +29,7 @@ app.use(
     credentials: true,
   })
 );
+
 
 const startServer = async () => {
   await connectDB(); // wait until DB connects
