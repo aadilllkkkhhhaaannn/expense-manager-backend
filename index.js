@@ -9,15 +9,22 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+// cors
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://income-manager-two.vercel.app",
+  "https://expense-manager-backend-1-c3hh.onrender.com",
+];
 
 app.use(
   cors({
-    origin: [
-      "https://expense-manager-backend-1-c3hh.onrender.com/",
-      "http://localhost:5173",
-      "https://income-manager-two.vercel.app/",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true); // allow karega
+      } else {
+        callback(new Error("CORS error: Not allowed")); // block karega
+      }
+    },
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
@@ -29,7 +36,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 const startServer = async () => {
   await connectDB(); // wait until DB connects
